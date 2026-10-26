@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NINTENDO GAME BOY (DMG-01) - 1989 Retrospective & 8-Bit Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23c8c2b7'/%3E%3Crect x='3' y='2' width='10' height='7' fill='%2374737a'/%3E%3Crect x='4' y='3' width='8' height='5' fill='%239bbc0f'/%3E%3Ccircle cx='11' cy='12' r='1.5' fill='%23911246'/%3E%3Ccircle cx='13.5' cy='10.5' r='1.5' fill='%23911246'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <div class="crt-overlay"></div>
+
+  <header class="retro-nav">
+    <div class="container nav-container">
+      <a href="#hero" class="brand-logo">
+        <div class="brand-icon">8b</div>
+        <div class="brand-text">
+          <span class="brand-title">GAME BOY DMG-01</span>
+          <span class="brand-sub">★ 1989 HARDWARE ARCHIVE ★</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#hero">SIMULATOR</a></li>
+          <li><a href="#vault">CARTRIDGES</a></li>
+          <li><a href="#specs">BLUEPRINT</a></li>
+          <li><a href="#anatomy">ANATOMY</a></li>
+          <li><a href="#soundlab">SOUND LAB</a></li>
+          <li><a href="#lore">LORE</a></li>
+          <li><a href="#quiz">TRIVIA</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-tools">
+        <select id="paletteSelect" class="tool-btn" title="Screen Palette">
+          <option value="classic">DMG PEA-SOUP</option>
+          <option value="pocket">POCKET B&W</option>
+          <option value="amber">AMBER CRT</option>
+          <option value="cyber">CYBER GLOW</option>
+        </select>
+        <button id="scanlinesToggle" class="tool-btn active" title="Toggle CRT Scanlines">CRT: ON</button>
+        <button id="flickerToggle" class="tool-btn" title="Toggle CRT Flicker">FLICKER</button>
+        <button id="bgmToggleBtn" class="tool-btn" title="Toggle 8-bit Chiptune Music">BGM: OFF</button>
+        <button id="soundMuteBtn" class="tool-btn active" title="Mute/Unmute SFX">SFX: ON</button>
+      </div>
+    </div>
+  </header>
+
+  <section id="hero" class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+
+        <div class="hero-intro">
+          <span class="pixel-badge hero-year-badge">KYOTO, JAPAN &bull; APRIL 21, 1989</span>
+          <h1 class="hero-headline">THE REVOLUTION IN YOUR POCKET</h1>
+          <p class="hero-lead">
+            Designed by legendary engineer <strong>Gunpei Yokoi</strong> and Nintendo R&D1, the <strong>Game Boy (DMG-01)</strong> defied critics who scoffed at its monochrome screen. Powered by the philosophy of <em>"Lateral Thinking with Withered Technology"</em>, it obliterated high-end rivals to sell over 118 million units.
+          </p>
+
+          <div class="hero-quick-specs">
+            <div class="spec-mini-pill">
+              <span>CPU ARCHITECTURE</span>
+              <strong>Sharp 8-Bit @ 4.19 MHz</strong>
+            </div>
+            <div class="spec-mini-pill">
+              <span>BATTERY LIFE</span>
+              <strong>35+ Hours (4x AA)</strong>
+            </div>
+            <div class="spec-mini-pill">
+              <span>RESOLUTION</span>
+              <strong>160 × 144 Dot Matrix</strong>
+            </div>
+            <div class="spec-mini-pill">
+              <span>WORLDWIDE SALES</span>
+              <strong>118.69 Million Units</strong>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <a href="#vault" class="pixel-btn pixel-btn-primary">▶ CHOOSE A CARTRIDGE</a>
+            <a href="#anatomy" class="pixel-btn">ANATOMY EXPLORER</a>
+          </div>
+
+          <div class="keyboard-guide">
+            <div class="keyboard-guide-title">⌨ DESKTOP KEYBOARD CONTROLS:</div>
+            <div class="key-bindings-list">
+              <span><span class="key-cap">▲ ▼ ◄ ►</span> D-PAD</span>
+              <span><span class="key-cap">Z</span> or <span class="key-cap">SPACE</span> A BUTTON</span>
+              <span><span class="key-cap">X</span> B BUTTON</span>
+              <span><span class="key-cap">ENTER</span> START</span>
+              <span><span class="key-cap">SHIFT</span> SELECT</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dmg-console-wrapper">
+          <div class="dmg-console power-on" id="dmgConsole">
+
+            <div class="dmg-top-bar">
+              <div class="power-slider-wrap">
+                <div class="power-switch" id="powerSwitch" title="Click to toggle Power ON/OFF">
+                  <div class="power-switch-knob"></div>
+                </div>
+                <span class="power-label">◀ OFF · ON ▶</span>
+              </div>
+              <div class="cartridge-slot-indicator" id="activeCartridgeIndicator" title="Active Cartridge">
+                TETRIS (1989)
+              </div>
+            </div>
+
+            <div class="dmg-vents">
+              <div class="vent"></div>
+              <div class="vent"></div>
+              <div class="vent"></div>
+            </div>
+
+            <div class="dmg-screen-bezel">
+              <div class="bezel-top-lines">
+                <div class="bezel-stripe blue"></div>
+                <span class="bezel-title">DOT MATRIX WITH STEREO SOUND</span>
+                <div class="bezel-stripe magenta"></div>
+              </div>
+
+              <div class="screen-housing">
+                
+                <div class="battery-indicator">
+                  <div class="battery-led" id="batteryLed"></div>
+                  <span class="battery-label">BATTERY</span>
+                </div>
+
+                <div class="lcd-screen-container" id="lcdScreen">
+                  <canvas id="gameCanvas" width="160" height="144"></canvas>
+                  <div class="lcd-grid-overlay"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dmg-logo-text">
+              <span>Nintendo</span>
+              <em>GAME BOY<sub style="font-size: 0.5rem;">TM</sub></em>
+            </div>
+
+            <div class="dmg-controls-row">
+
+              <div class="d-pad">
+                <button class="d-pad-btn d-pad-up" id="btnUp" aria-label="Up"></button>
+                <button class="d-pad-btn d-pad-left" id="btnLeft" aria-label="Left"></button>
+                <div class="d-pad-center"></div>
+                <button class="d-pad-btn d-pad-right" id="btnRight" aria-label="Right"></button>
+                <button class="d-pad-btn d-pad-down" id="btnDown" aria-label="Down"></button>
+              </div>
+
+              <div class="action-buttons">
+                <div class="action-btn-group">
+                  <button class="round-btn" id="btnB" aria-label="Button B"></button>
+                  <span class="btn-letter">B</span>
+                </div>
+                <div class="action-btn-group">
+                  <button class="round-btn" id="btnA" aria-label="Button A"></button>
+                  <span class="btn-letter">A</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="system-buttons-row">
+              <div class="sys-btn-group">
+                <button class="pill-btn" id="btnSelect" aria-label="Select"></button>
+                <span class="sys-label">SELECT</span>
+              </div>
+              <div class="sys-btn-group">
+                <button class="pill-btn" id="btnStart" aria-label="Start"></button>
+                <span class="sys-label">START</span>
+              </div>
+            </div>
+
+            <div class="speaker-grille">
+              <div class="speaker-slit"></div>
+              <div class="speaker-slit"></div>
+              <div class="speaker-slit"></div>
+              <div class="speaker-slit"></div>
+              <div class="speaker-slit"></div>
+              <div class="speaker-slit"></div>
+            </div>
+
+            <div class="dmg-bottom-edge">
+              <div class="phones-jack">
+                <div class="jack-hole"></div>
+                <span>PHONES</span>
+              </div>
+              <span style="font-family: var(--font-pixel); font-size: 0.4rem; color: #888;">MODEL NO. DMG-01</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="vault" class="cartridge-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ ROM VAULT ]</span>
+        <h2 class="section-title">THE CARTRIDGE ARCHIVE</h2>
+        <p class="section-subtitle">
+          Select and insert a vintage Game Pak cartridge into the console above. Each cartridge boots into its own custom 8-bit engine!
+        </p>
+      </div>
+
+      <div class="cartridge-grid">
+
+        <div class="cartridge-card active-cart" data-game="tetris" data-title="TETRIS (1989)">
+          <div class="cart-visual-wrap">
+            <div class="cart-notch"></div>
+            <div class="cart-label tetris-bg">
+              <span class="cart-game-title">TETRIS<br>テトリス</span>
+              <span class="cart-game-year">1989 &bull; DMG-TR-USA</span>
+            </div>
+          </div>
+          <div class="cart-body">
+            <h4>TETRIS</h4>
+            <p>
+              The definitive falling-block masterpiece engineered by Alexey Pajitnov. Packaged with original DMG systems, it turned video gaming into a universal worldwide obsession.
+            </p>
+            <div class="cart-meta">
+              <span>GENRE: PUZZLE</span>
+              <span>ROM: 32 KB</span>
+            </div>
+            <button class="pixel-btn pixel-btn-primary insert-cart-btn">▶ INSERT INTO CONSOLE</button>
+          </div>
+        </div>
+
+        <div class="cartridge-card" data-game="space" data-title="SPACE VOYAGER (1989)">
+          <div class="cart-visual-wrap">
+            <div class="cart-notch"></div>
+            <div class="cart-label space-bg">
+              <span class="cart-game-title">SPACE<br>VOYAGER</span>
+              <span class="cart-game-year">1989 &bull; DMG-SP-USA</span>
+            </div>
+          </div>
+          <div class="cart-body">
+            <h4>SPACE VOYAGER</h4>
+            <p>
+              An intense 8-bit vertical shoot-’em-up arcade action title. Dodge incoming alien laser salvos, blast enemy attack wings, and survive descending planetary hordes.
+            </p>
+            <div class="cart-meta">
+              <span>GENRE: SHMUP ARCADE</span>
+              <span>ROM: 64 KB</span>
+            </div>
+            <button class="pixel-btn pixel-btn-primary insert-cart-btn">▶ INSERT INTO CONSOLE</button>
+          </div>
+        </div>
+
+        <div class="cartridge-card" data-game="monster" data-title="POCKET MONSTERS (1996)">
+          <div class="cart-visual-wrap">
+            <div class="cart-notch"></div>
+            <div class="cart-label pokemon-bg">
+              <span class="cart-game-title">POCKET<br>MONSTERS</span>
+              <span class="cart-game-year">1996 &bull; DMG-PK-JPN</span>
+            </div>
+          </div>
+          <div class="cart-body">
+            <h4>POCKET MONSTERS</h4>
+            <p>
+              The cultural phenomenon created by Satoshi Tajiri. Engage in an authentic turn-based 8-bit battle featuring Pikachu and Gengar with animated HP bars and retro moves.
+            </p>
+            <div class="cart-meta">
+              <span>GENRE: RPG BATTLE</span>
+              <span>ROM: 512 KB + MBC3</span>
+            </div>
+            <button class="pixel-btn pixel-btn-primary insert-cart-btn">▶ INSERT INTO CONSOLE</button>
+          </div>
+        </div>
+
+        <div class="cartridge-card" data-game="bricks" data-title="BOUNCE BRICKS (1990)">
+          <div class="cart-visual-wrap">
+            <div class="cart-notch"></div>
+            <div class="cart-label zelda-bg">
+              <span class="cart-game-title">BOUNCE<br>BRICKS</span>
+              <span class="cart-game-year">1990 &bull; DMG-BB-USA</span>
+            </div>
+          </div>
+          <div class="cart-body">
+            <h4>BOUNCE BRICKS</h4>
+            <p>
+              The quintessential paddle-and-ball brick destruction arcade challenge. Deflect the high-speed pixel sphere with surgical precision to clear multi-tiered blocks.
+            </p>
+            <div class="cart-meta">
+              <span>GENRE: ACTION ARCADE</span>
+              <span>ROM: 32 KB</span>
+            </div>
+            <button class="pixel-btn pixel-btn-primary insert-cart-btn">▶ INSERT INTO CONSOLE</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="specs" class="specs-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ SCHEMATICS & HARDWARE ]</span>
+        <h2 class="section-title">ENGINEERING BLUEPRINT</h2>
+        <p class="section-subtitle">
+          How Nintendo squeezed an immortal gaming system into a 394-gram handheld using humble 1980s components.
+        </p>
+      </div>
+
+      <div class="specs-grid">
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">⚡</div>
+          <div class="spec-info">
+            <h3>CENTRAL PROCESSOR</h3>
+            <div class="spec-value">Sharp LR35902 @ 4.19 MHz</div>
+            <p>A hybrid Z80/Intel 8080 8-bit CISC processor. Engineered for ultra-low power consumption with custom hardware sprite blending registers.</p>
+          </div>
+        </div>
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">📺</div>
+          <div class="spec-info">
+            <h3>DISPLAY MATRIX</h3>
+            <div class="spec-value">160 × 144 STN LCD (2-bit)</div>
+            <p>Reflective Super-Twisted Nematic dot-matrix LCD. 4 shades of olive-green grayscale, 59.7 Hz refresh rate, and 2.6 inches diagonal width.</p>
+          </div>
+        </div>
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">💾</div>
+          <div class="spec-info">
+            <h3>SYSTEM & VIDEO MEMORY</h3>
+            <div class="spec-value">8 KB Work RAM + 8 KB VRAM</div>
+            <p>Split address space with support for up to 40 on-screen sprites simultaneously (10 per horizontal scanline) with zero CPU pipeline stalls.</p>
+          </div>
+        </div>
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">🔊</div>
+          <div class="spec-info">
+            <h3>AUDIO SYNTHESIZER</h3>
+            <div class="spec-value">4-Channel Programmable PSG</div>
+            <p>Two pulse square waves with pitch sweep envelopes, one 4-bit custom wave channel for basslines, and one pseudo-random white noise channel.</p>
+          </div>
+        </div>
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">🔋</div>
+          <div class="spec-info">
+            <h3>POWER ENDURANCE</h3>
+            <div class="spec-value">30 – 35+ Hours Continuous</div>
+            <p>Powered by four standard AA batteries. Consumed just 0.7 Watts of electricity, outlasting color competitors by more than 10-to-1.</p>
+          </div>
+        </div>
+
+        <div class="pixel-box spec-card">
+          <div class="spec-icon-box">📏</div>
+          <div class="spec-info">
+            <h3>CHASSIS DIMENSIONS</h3>
+            <div class="spec-value">90 × 148 × 32 mm &bull; 394g</div>
+            <p>Constructed from ultra-durable injection-molded ABS plastic with a recessed, scratch-resistant acrylic screen protector lens.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="comparison-container">
+        <h3 class="comparison-title">★ 1990 HANDHELD WARS: PHILOSOPHY IN ACTION ★</h3>
+        <div style="overflow-x: auto;">
+          <table class="retro-table">
+            <thead>
+              <tr>
+                <th>SPECIFICATION</th>
+                <th>NINTENDO GAME BOY</th>
+                <th>SEGA GAME GEAR</th>
+                <th>ATARI LYNX</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LAUNCH YEAR</strong></td>
+                <td>1989</td>
+                <td>1990</td>
+                <td>1989</td>
+              </tr>
+              <tr>
+                <td><strong>DISPLAY TYPE</strong></td>
+                <td>Reflective 4-Shade STN LCD</td>
+                <td>Backlit 4096-Color LCD</td>
+                <td>Backlit 4096-Color LCD</td>
+              </tr>
+              <tr>
+                <td><strong>BATTERY LIFE</strong></td>
+                <td class="winner"><strong>35+ HOURS (4x AA)</strong> 🏆</td>
+                <td>3 to 4 Hours (6x AA)</td>
+                <td>4 to 5 Hours (6x AA)</td>
+              </tr>
+              <tr>
+                <td><strong>LAUNCH PRICE</strong></td>
+                <td class="winner"><strong>$89.95 (Inc. Tetris)</strong> 🏆</td>
+                <td>$149.99</td>
+                <td>$179.99</td>
+              </tr>
+              <tr>
+                <td><strong>TOTAL UNITS SOLD</strong></td>
+                <td class="winner"><strong>118.69 MILLION</strong> 👑</td>
+                <td>10.62 Million</td>
+                <td>~3 Million</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="anatomy" class="anatomy-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ INTERACTIVE SCHEMATICS ]</span>
+        <h2 class="section-title">HARDWARE ANATOMY EXPLORER</h2>
+        <p class="section-subtitle">
+          Click on individual hardware modules below to inspect their internal mechanics and historical significance.
+        </p>
+      </div>
+
+      <div class="anatomy-wrapper">
+
+        <div class="schematic-box">
+          <div class="schematic-header">
+            <span>SCHEMATIC: DMG-CPU-06</span>
+            <span>REV: NINTENDO 1989</span>
+          </div>
+
+          <div class="anatomy-parts-list">
+            <button class="part-btn active" data-part="cpu">
+              <span>01. SHARP HYBRID CPU</span>
+              <span>[4.19 MHz]</span>
+            </button>
+            <button class="part-btn" data-part="screen">
+              <span>02. DOT-MATRIX LCD PANEL</span>
+              <span>[160x144]</span>
+            </button>
+            <button class="part-btn" data-part="audio">
+              <span>03. 4-CHANNEL SOUND CHIP</span>
+              <span>[PSG SYNTH]</span>
+            </button>
+            <button class="part-btn" data-part="battery">
+              <span>04. 4x AA BATTERY CELLS</span>
+              <span>[35+ HRS]</span>
+            </button>
+            <button class="part-btn" data-part="link">
+              <span>05. SERIAL LINK CABLE PORT</span>
+              <span>[EXT 512Kbps]</span>
+            </button>
+            <button class="part-btn" data-part="cartridge">
+              <span>06. GAME PAK ROM BUS</span>
+              <span>[MBC ARCH]</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="pixel-box part-detail-box">
+          <div class="part-detail-header">
+            <h3 id="partDetailTitle">Sharp LR35902 8-bit CPU</h3>
+            <span class="pixel-badge" id="partDetailBadge">4.194304 MHz Core</span>
+          </div>
+          <p class="part-detail-text" id="partDetailText">
+            A custom hybrid processor engineered by Sharp specifically for the Game Boy. It synthesizes features from both the iconic Zilog Z80 and Intel 8080 architectures. Operating at 4.19 MHz, it executed all game logic, sprite collisions, and system routines with extreme power efficiency.
+          </p>
+          <div class="part-fun-fact" id="partDetailFact">
+            <strong>★ HISTORICAL DOSSIER:</strong> Gunpei Yokoi deliberately chose an 8-bit chip rather than a 16-bit processor to maximize battery endurance (giving 30+ hours on 4 AAs) and keep unit manufacturing costs below $90.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="soundlab" class="sound-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ AUDIO SYNTHESIZER ]</span>
+        <h2 class="section-title">8-BIT CHIPTUNE SOUND LAB</h2>
+        <p class="section-subtitle">
+          Test real-time procedural sound synthesis simulating the Game Boy's 4-channel audio silicon using the Web Audio API.
+        </p>
+      </div>
+
+      <div class="synth-panel">
+
+        <div class="synth-channels-row">
+          <div class="channel-card">
+            <div class="channel-header">
+              <span class="channel-title">CH 1: PULSE 1</span>
+              <span class="channel-type">SQUARE</span>
+            </div>
+            <p class="channel-desc">Features variable 12.5%–75% duty cycles with pitch sweep envelope. Carries lead melodies and jump SFX.</p>
+          </div>
+
+          <div class="channel-card">
+            <div class="channel-header">
+              <span class="channel-title">CH 2: PULSE 2</span>
+              <span class="channel-type">SQUARE</span>
+            </div>
+            <p class="channel-desc">Second pulse wave without sweep. Used for counter-melodies, harmonies, and coin pickups.</p>
+          </div>
+
+          <div class="channel-card">
+            <div class="channel-header">
+              <span class="channel-title">CH 3: CUSTOM WAVE</span>
+              <span class="channel-type">4-BIT VOL</span>
+            </div>
+            <p class="channel-desc">32 programmable 4-bit samples. Capable of warm triangle and smooth digital basslines.</p>
+          </div>
+
+          <div class="channel-card">
+            <div class="channel-header">
+              <span class="channel-title">CH 4: WHITE NOISE</span>
+              <span class="channel-type">7/15-BIT LFSR</span>
+            </div>
+            <p class="channel-desc">Generates pseudo-random frequencies. Powers snares, hi-hats, explosions, and footsteps.</p>
+          </div>
+        </div>
+
+        <h4 style="font-family: var(--font-pixel); font-size: 0.75rem; color: var(--accent-cyan); margin-bottom: 0.8rem;">
+          ▶ TRIGGER VINTAGE 8-BIT SFX:
+        </h4>
+        <div class="sfx-buttons-grid">
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="coin">★ COIN PICKUP</button>
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="jump">▲ 8-BIT JUMP</button>
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="laser">⚡ LASER BLAST</button>
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="explosion">💥 EXPLOSION</button>
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="powerup">🍄 POWER UP</button>
+          <button class="pixel-btn sfx-trigger-btn" data-sfx="1up">💖 1-UP EXTRA</button>
+          <button class="pixel-btn sfx-trigger-btn pixel-btn-primary" data-sfx="chime">🔔 BOOT CHIME</button>
+        </div>
+
+        <h4 style="font-family: var(--font-pixel); font-size: 0.75rem; color: var(--accent-cyan); margin-top: 2rem;">
+          ▶ PLAY 8-BIT PULSE WAVE PIANO (C4 TO C5):
+        </h4>
+        <div class="piano-keyboard">
+          <div class="piano-key" data-freq="261.63">C4</div>
+          <div class="piano-key" data-freq="293.66">D4</div>
+          <div class="piano-key" data-freq="329.63">E4</div>
+          <div class="piano-key" data-freq="349.23">F4</div>
+          <div class="piano-key" data-freq="392.00">G4</div>
+          <div class="piano-key" data-freq="440.00">A4</div>
+          <div class="piano-key" data-freq="493.88">B4</div>
+          <div class="piano-key" data-freq="523.25">C5</div>
+          <div class="piano-key" data-freq="587.33">D5</div>
+          <div class="piano-key" data-freq="659.25">E5</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="lore" class="lore-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ RETRO ARCHIVES ]</span>
+        <h2 class="section-title">THE LEGEND & PHILOSOPHY</h2>
+        <p class="section-subtitle">
+          How unconventional design and indomitable hardware durability cemented the Game Boy into human history.
+        </p>
+      </div>
+
+      <div class="lore-grid">
+
+        <div class="lore-card">
+          <span class="pixel-badge lore-badge">DESIGN PHILOSOPHY</span>
+          <h3>LATERAL THINKING WITH WITHERED TECHNOLOGY</h3>
+          <p>
+            In Japanese: <em>枯れた技術の水平思考 (Kareta Gijutsu no Suihei Shikō)</em>. Gunpei Yokoi argued that cutting-edge technology is expensive, prone to bugs, and power-hungry. Instead, true design genius lies in taking mature, inexpensive, widely manufactured ("withered") technology and applying it in radical new lateral directions.
+          </p>
+          <p>
+            While Atari and Sega wasted battery power on color backlights, Yokoi prioritized 30+ hours of gameplay, low unit cost, and supreme physical durability. History proved him right.
+          </p>
+          <div class="quote-box">
+            "The Nintendo-esque way is to look at existing technology not with pride, but with creative curiosity."
+            <span class="quote-author">— Gunpei Yokoi, Creator of Game Boy</span>
+          </div>
+        </div>
+
+        <div class="lore-card">
+          <span class="pixel-badge lore-badge">BATTLE-TESTED RECORD</span>
+          <h3>THE GULF WAR SURVIVOR GAME BOY</h3>
+          <p>
+            During the 1990–1991 Gulf War, a military barracks housing US Army medic Stephan Scoggins was hit by a missile explosion. The blast and ensuing fire burned his barracks to the ground, incinerating equipment and melting Scoggins' Game Boy into a charred, warped block of plastic.
+          </p>
+          <p>
+            When returned to Nintendo for repair, technicians inserted a Tetris cartridge and flicked the power switch: <strong>the console booted instantly and ran Tetris flawlessly</strong>. It was preserved for decades on permanent display at Nintendo NY in Rockefeller Center.
+          </p>
+          <div class="quote-box">
+            "Its chassis was scorched and melted to the bone, but the motherboard refused to die."
+            <span class="quote-author">— Nintendo Power Magazine, Issue 25</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="quiz" class="quiz-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">[ TEST YOUR KNOWLEDGE ]</span>
+        <h2 class="section-title">8-BIT TRIVIA CHALLENGE</h2>
+        <p class="section-subtitle">
+          Prove your mastery of classic gaming history. Answer five questions to earn the rank of Master Archivist.
+        </p>
+      </div>
+
+      <div class="quiz-box">
+        <div class="quiz-progress-bar">
+          <span id="quizCounter">QUESTION 1 OF 5</span>
+          <span id="quizScore">SCORE: 0</span>
+        </div>
+
+        <h3 class="quiz-question-title" id="quizQuestion">
+          Loading Question...
+        </h3>
+
+        <div class="quiz-options-grid" id="quizOptions">
+          
+        </div>
+
+        <div class="quiz-feedback" id="quizFeedback">
+          <p class="quiz-feedback-text" id="quizFeedbackText"></p>
+          <button class="pixel-btn pixel-btn-gold" id="quizNextBtn">NEXT QUESTION ▶</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="retro-footer">
+    <div class="container">
+
+      <div class="easter-egg-box">
+        <div class="easter-egg-title">★ SECRET HARDWARE OVERCLOCK CODE: ★</div>
+        <div class="konami-code-display">
+          ↑ &nbsp; ↑ &nbsp; ↓ &nbsp; ↓ &nbsp; ← &nbsp; → &nbsp; ← &nbsp; → &nbsp; B &nbsp; A
+        </div>
+        <p style="font-size: 0.65rem; color: #888; margin-top: 0.4rem;">
+          Type the legendary Konami Code anywhere on your keyboard to unlock the Golden Collector Edition!
+        </p>
+      </div>
+
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>ABOUT THIS ARCHIVE</h4>
+          <p>
+            An interactive historical tribute to the Nintendo Game Boy (DMG-01). Engineered with pure, hand-crafted HTML5, CSS3 pixel-art styling, and vanilla JavaScript Web Audio synthesis.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>HARDWARE DOSSIERS</h4>
+          <ul class="footer-links">
+            <li><a href="#hero">DMG-01 Hardware Simulator</a></li>
+            <li><a href="#vault">Tetris &amp; Retro ROMs</a></li>
+            <li><a href="#specs">Sharp LR35902 Blueprint</a></li>
+            <li><a href="#soundlab">Web Audio Chiptune Synthesizer</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>DESIGN ETHOS</h4>
+          <p>
+            "Withered Technology" &bull; 160×144 2-Bit Grayscale &bull; 4.194304 MHz &bull; Zero external libraries &bull; 100% pixel-perfect retro aesthetics.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 1989–2026 RETRO ARCHIVE PROJECT &bull; ORIGINAL HTML / CSS / JS ONLY &bull; NINTENDO AND GAME BOY ARE TRADEMARKS OF NINTENDO CO., LTD.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <div class="pixel-toast" id="pixelToast">NOTIFICATION</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
